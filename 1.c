@@ -51,7 +51,7 @@ void	load_texture(t_info *info)
 	t_img	img;
 	int		*res;
 
-	img.img = mlx_xpm_file_to_image(info->mlx, "textures/eagle.xpm", &img.width, &img.height);
+	img.img = mlx_xpm_file_to_image(info->mlx, "textures/wood.xpm", &img.width, &img.height);
 	img.data = (int *)mlx_get_data_addr(img.img, &img.bpp, &img.size_l, &info->img.endian);
 
 	res = (int *)malloc(sizeof(int) * (img.width * img.height));
