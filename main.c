@@ -3,68 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/15 12:12:25 by yohan             #+#    #+#             */
-/*   Updated: 2020/06/25 19:01:45 by yohlee           ###   ########.fr       */
+/*   Created: 2020/07/01 17:09:52 by yohlee            #+#    #+#             */
+/*   Updated: 2020/07/06 10:58:46 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx/mlx.h"
-#include "libft/libft.h"
+#include "cub3d.h"
 
-int	worldMap[24][24] = {
-							{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-							{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-							{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-							{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-						};
-
-typedef struct	s_data
+int	set_info(t_info *info, char *path)
 {
-
-}				t_data;
-
-void	init_data(t_data *data)
-{
-	void	*mlx;
-	void	*win;
-	
+	init_player(&info->player);
+	if (!parse_cub(info, path))
+		return (exit_error(info));
+	init_player_direction(info);
+	info->mlx = mlx_init();
+	if (!init_buffer(info))
+		return (exit_error(info));
+	if (!init_texture(info))
+		return (exit_error(info));
+	load_texture(info);
+	info->img.img = mlx_new_image(info->mlx, info->width, info->height);
+	info->img.data = (int *)mlx_get_data_addr(\
+		info->img.img, &info->img.bpp, &info->img.size_l, &info->img.endian);
+	return (1);
 }
 
-void	setting_data(t_data *data)
+int	exit_free(t_info *info)
 {
-	data->key = -1;
-	init_player_info(&(info->player))
+	if (info->map != NULL)
+		ft_free_2d(info->map);
+	if (info->buf != NULL)
+		free(info->buf);
+		// ft_free_2d(info->buf);
+	if (info->texture != NULL)
+		free(info->texture);
+		// ft_free_2d(info->texture);
+	if (info->z_buffer != NULL)
+		free(info->z_buffer);
+	if (info->sprite != NULL)
+		free(info->sprite);
+	if (info->img.img != NULL)
+		mlx_destroy_image(info->mlx, info->img.img);
+	if (info->mlx != NULL && info->win != NULL)
+		mlx_destroy_window(info->mlx, info->win);
+	exit(0);
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
+	t_info	info;
+	int		save;
 
-	init_data(&data);
-	setting_data(&data);
-
-	mlx_loop_hook(data.mlx, &main_loop, &data);
-	mlx_loop(data.mlx);
+	save = (argc >= 2 && (ft_strncmp(argv[1], "--save", 6) == 0)) ? 1 : 0;
+	if (argc < save + 2)
+		return (exit_error(&info));
+	if (!set_info(&info, argv[save + 1]))
+		return (exit_error(&info));
+	if (save == 1)
+	{
+		raycasting(&info);
+		sprite_raycasting(&info, &info.player);
+		if (!save_bmp(&info))
+			return (exit_error(&info));
+		return (exit_free(&info));
+	}
+	else
+	{
+		info.win = mlx_new_window(info.mlx, info.width, info.height, "yohlee");
+		mlx_loop_hook(info.mlx, &main_loop, &info);
+		mlx_hook(info.win, X_EVENT_KEY_PRESS, 1 << 0, &key_press, &info);
+		mlx_loop(info.mlx);
+	}
+	return (0);
 }

@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   key_linux.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 13:39:34 by yohlee            #+#    #+#             */
-/*   Updated: 2020/06/17 19:29:27 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/04 21:22:19 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef KEY_LINUX_H
 # define KEY_LINUX_H
-
-#define X_EVENT_KEY_PRESS		2
-#define X_EVENT_KEY_RELEASE		3
-#define X_EVENT_KEY_EXIT		1
 
 /*
 ** Keyboard LETTERS

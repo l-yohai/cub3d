@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   untextured_raycast.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 12:12:25 by yohan             #+#    #+#             */
-/*   Updated: 2020/06/27 22:40:55 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/05 23:05:01 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx/mlx.h"
-#include "key_linux.h"
+#include "../mlx/mlx.h"
+#include "../key_linux.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#define X_EVENT_KEY_PRESS	2
+#define X_EVENT_KEY_EXIT	17
 #define mapWidth 24
 #define mapHeight 24
 #define width 640

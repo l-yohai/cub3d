@@ -6,13 +6,13 @@
 /*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 03:15:28 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/06 10:30:40 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/05 07:41:10 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	get_screen_size(t_info *info, char *line)
+int		get_screen_size(t_info *info, char *line)
 {
 	char	**size;
 
@@ -118,7 +118,4 @@ int	parse_cub(t_info *info, char *path)
 		return (exit_error(info));
 	if (!check_init(info))
 		return (exit_error(info));
-	if (!set_sprite(info))
-		return (exit_error(info));
-	return (1);
 }

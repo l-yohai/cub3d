@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   textured_raycast.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 15:18:03 by yohlee            #+#    #+#             */
-/*   Updated: 2020/06/28 15:36:30 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/05 23:18:34 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx/mlx.h"
-#include "key_linux.h"
+#include "../mlx/mlx.h"
+#include "../key_linux.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#define X_EVENT_KEY_PRESS	2
+#define X_EVENT_KEY_EXIT	17
 #define texWidth 64
 #define texHeight 64
 #define mapWidth 24
 #define mapHeight 24
-#define width 640
-#define height 480
+#define width 1920
+#define height 1080
 
 typedef struct	s_img
 {
@@ -45,7 +46,8 @@ typedef struct	s_info
 	void	*mlx;
 	void	*win;
 	t_img	img;
-	int		buf[height][width];
+	int		**buf;
+	// int		buf[height][width];
 	int		texture[8][texHeight * texWidth];
 	// int		*texture[8];
 
@@ -275,6 +277,12 @@ int	main(void)
 	info.dirY = 0.0;
 	info.planeX = 0.0;
 	info.planeY = 0.66;
+
+	info.buf = (int **)malloc(sizeof(int *) * height);
+	for (int i = 0; i < height; i++)
+	{
+		info.buf[i] = (int *)malloc(sizeof(int) * width);
+	}
 
 	for (int i = 0; i < height; i++)
 	{
