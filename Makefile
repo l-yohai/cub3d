@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+         #
+#    By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/06 08:12:01 by yohlee            #+#    #+#              #
-#    Updated: 2020/07/06 09:56:17 by yohlee           ###   ########.fr        #
+#    Updated: 2020/07/07 10:16:59 by yohlee           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,41 +15,41 @@ NAME = cub3D
 LIBFT = ./libft/libft.a
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -D BUFFER_SIZE=256 
-INCLUDES = -I./ -I./libft -I./mlx_linux
-INCLIB = -Lmlx_linux -lmlx -lXext -lX11 -lm -Llibft -lft
-LIB = ./libft
+INCS = -I./includes -I./libft -I./mlx
+INCLIB = -Lmlx -lmlx -framework OpenGL -framework Appkit -Llibft -lft
+CFLAGS = -Wall -Werror -Wextra $(INCS)
+LIBFT = ./libft
 
-SRCS = main.c\
-		check_map.c\
-		get_next_line.c\
-		init.c\
-		key_handling.c\
-		parse.c\
-		parse_map.c\
-		texture.c\
-		utils.c\
-		raycasting.c\
-		draw.c\
-		sprite.c\
-		sprite_utils.c\
-		main_loop.c\
-		bmp.c
+SRCS = ./srcs/main.c\
+		./srcs/check_map.c\
+		./srcs/get_next_line.c\
+		./srcs/init.c\
+		./srcs/key_handling.c\
+		./srcs/parse.c\
+		./srcs/parse_map.c\
+		./srcs/texture.c\
+		./srcs/utils.c\
+		./srcs/raycasting.c\
+		./srcs/draw.c\
+		./srcs/sprite.c\
+		./srcs/sprite_utils.c\
+		./srcs/main_loop.c\
+		./srcs/bmp.c
 
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(MAKE) -C $(LIB) bonus
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(INCLIB)
+	$(MAKE) -C $(LIBFT) bonus
+	$(CC) $(CFLAGS) $(INCS) -o $(NAME) $(OBJS) $(INCLIB)
 
 clean:
-	$(MAKE) -C $(LIB) clean
+	$(MAKE) -C $(LIBFT) clean
 	rm -f $(OBJS)
 
 fclean: clean
-	$(MAKE) -C $(LIB) fclean
+	$(MAKE) -C $(LIBFT) fclean
 	rm -f $(NAME)
 
 # bonus: all
