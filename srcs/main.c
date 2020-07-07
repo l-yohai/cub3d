@@ -6,13 +6,13 @@
 /*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 17:09:52 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/07 10:05:40 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/07 11:27:10 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	set_info(t_info *info, char *path)
+int		set_info(t_info *info, char *path)
 {
 	init_player(&info->player);
 	if (!parse_cub(info, path))
@@ -30,7 +30,29 @@ int	set_info(t_info *info, char *path)
 	return (1);
 }
 
-int	main(int argc, char **argv)
+int		process_option(t_info *info, int option)
+{
+	if (option == 1)
+	{
+		raycasting(info);
+		sprite_raycasting(info, &info->player);
+		if (!save_bmp(info))
+			return (exit_error(info));
+		ft_exit(0);
+	}
+	else
+	{
+		info->win =\
+			mlx_new_window(info->mlx, info->width, info->height, "yohlee");
+		mlx_hook(info->win, X_EVENT_KEY_PRESS, 0, key_press, info);
+		mlx_hook(info->win, X_EVENT_KEY_EXIT, 0, ft_exit, 0);
+		mlx_loop_hook(info->mlx, main_loop, info);
+		mlx_loop(info->mlx);
+	}
+	return (1);
+}
+
+int		main(int argc, char **argv)
 {
 	t_info	info;
 	int		option;
@@ -40,20 +62,8 @@ int	main(int argc, char **argv)
 		return (exit_error(&info));
 	if (!set_info(&info, argv[option + 1]))
 		return (exit_error(&info));
-	if (option == 1)
-	{
-		raycasting(&info);
-		sprite_raycasting(&info, &info.player);
-		if (!save_bmp(&info))
-			return (exit_error(&info));
-		exit(0);
-	}
-	else
-	{
-		info.win = mlx_new_window(info.mlx, info.width, info.height, "yohlee");
-		mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, key_press, &info);
-		mlx_loop_hook(info.mlx, main_loop, &info);
-		mlx_loop(info.mlx);
-	}
+	if (!process_option(&info, option))
+		return (exit_error(&info));
+	free_cub(&info);
 	return (0);
 }

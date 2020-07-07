@@ -6,7 +6,7 @@
 /*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 11:15:43 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/07 09:57:24 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/07 10:59:19 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	init_info(t_info *info)
 	info->map_width = 0;
 	info->map_height = 0;
 	info->map = NULL;
+	info->buf = NULL;
+	info->z_buffer = NULL;
 	info->north_texture_path = NULL;
 	info->south_texture_path = NULL;
 	info->west_texture_path = NULL;

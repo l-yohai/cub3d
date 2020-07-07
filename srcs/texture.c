@@ -6,7 +6,7 @@
 /*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 19:24:10 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/07 10:02:03 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/07 10:57:33 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,9 @@ void	load_texture(t_info *info)
 	load_image(info, info->texture[0], info->west_texture_path, &img);
 	load_image(info, info->texture[1], info->east_texture_path, &img);
 	load_image(info, info->texture[4], info->sprite_texture_path, &img);
+	ft_free(info->north_texture_path);
+	ft_free(info->south_texture_path);
+	ft_free(info->west_texture_path);
+	ft_free(info->east_texture_path);
+	ft_free(info->sprite_texture_path);
 }

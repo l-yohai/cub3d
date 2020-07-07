@@ -6,7 +6,7 @@
 /*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 13:39:47 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/07 10:18:58 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/07 12:29:40 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,6 @@ typedef struct				s_sprite
 	double					y;
 	double					distance;
 }							t_sprite;
-
-typedef struct				s_floor_ceiling
-{
-	float					row_distance;
-	float					floor_x;
-	float					floor_y;
-	int						tex_x;
-	int						tex_y;
-	int						checker_board_pattern;
-	int						floor_texture;
-	int						ceiling_texture;
-}							t_floor_ceiling;
 
 typedef struct				s_ray
 {
@@ -120,7 +108,6 @@ typedef struct				s_info
 	void					*win;
 	t_img					img;
 	t_player				player;
-	t_floor_ceiling			fc;
 	t_ray					ray;
 	t_sprite_ray			s_ray;
 	t_sprite				*sprite;
@@ -142,7 +129,6 @@ typedef struct				s_info
 	int						ceiling_color;
 	int						dir;
 	int						num_sprite;
-
 }							t_info;
 
 /*
@@ -281,10 +267,18 @@ void						write_data(t_info *info, int fd);
 int							save_bmp(t_info *info);
 
 /*
+**		exit.c
+*/
+
+int							ft_exit(int ret);
+void						ft_free(void *s);
+int							free_cub(t_info *info);
+
+/*
 **		main.c
 */
 
-int							exit_free(t_info *info);
 int							set_info(t_info *info, char *path);
+int							process_option(t_info *info, int option);
 
 #endif

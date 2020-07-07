@@ -6,7 +6,7 @@
 /*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/05 07:42:15 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/07 09:51:53 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/07 11:17:06 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int		key_press(int key, t_info *info)
 	if (key == K_AR_R)
 		rotate_player(&info->player, -info->player.rot_speed);
 	if (key == K_ESC)
-		exit(0);
+		ft_exit(0);
 	return (0);
 }

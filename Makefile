@@ -6,7 +6,7 @@
 #    By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/06 08:12:01 by yohlee            #+#    #+#              #
-#    Updated: 2020/07/07 10:16:59 by yohlee           ###   ########.fr        #
+#    Updated: 2020/07/07 12:31:17 by yohlee           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRCS = ./srcs/main.c\
 		./srcs/sprite.c\
 		./srcs/sprite_utils.c\
 		./srcs/main_loop.c\
-		./srcs/bmp.c
+		./srcs/bmp.c\
+		./srcs/exit.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -51,8 +52,6 @@ clean:
 fclean: clean
 	$(MAKE) -C $(LIBFT) fclean
 	rm -f $(NAME)
-
-# bonus: all
 
 re: fclean all
 
