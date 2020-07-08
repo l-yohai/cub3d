@@ -24,7 +24,7 @@ The floor casting(쉽게 바닥캐스팅이라고 하겠습니다.)
 바닥캐스팅은 ‘주사선’의 방식, 즉 광선이죠, 으로 이루어집니다. (work scanline by scanline) 일반적으로 TV가 한 화면을 만들 때 직선방향으로 수많은 직선레이저를 쏘는데, 이 레이저들은 하나하나의 라인으로 이루어져 있고, 이 라인 하나를 주사선이라고 부릅니다. (아래 그림의 색깔 별 라인이라고 생각하시면 될 것 같습니다.) 쉽게말하자면, 사람이 책을 위에서 아래로 읽어내는 것처럼 우리는 책을 읽을 때 ‘시야’를 위에서 아래로 흘려보내죠. 이것과 같은 방식으로 TV도 주사선이라는 ‘시야’를 직선방향으로 보내는 움직임을 통해 한 장의 화면을 만드는 것이죠. 
 
 ![image](https://user-images.githubusercontent.com/49181231/86937512-4c63c800-c17a-11ea-9299-b44560062685.png)
-[사진참조](https://www.google.com/url?sa=i&url=https%3A%2F%2Fko.wikipedia.org%2Fwiki%2F%25EC%2595%2584%25EB%2582%25A0%25EB%25A1%259C%25EA%25B7%25B8_%25ED%2585%2594%25EB%25A0%2588%25EB%25B9%2584%25EC%25A0%2584&psig=AOvVaw3ZxZ75Ta1zProX19XUqBD9&ust=1593704144066000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMDy3N6wrOoCFQAAAAAdAAAAABAD)
+[사진](https://www.google.com/url?sa=i&url=https%3A%2F%2Fko.wikipedia.org%2Fwiki%2F%25EC%2595%2584%25EB%2582%25A0%25EB%25A1%259C%25EA%25B7%25B8_%25ED%2585%2594%25EB%25A0%2588%25EB%25B9%2584%25EC%25A0%2584&psig=AOvVaw3ZxZ75Ta1zProX19XUqBD9&ust=1593704144066000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMDy3N6wrOoCFQAAAAAdAAAAABAD)
 
 현재 스캔라인을 구하기 위해서는, 라인의 왼쪽 픽셀에 해당하는 바닥의 위치와 라인의 오른쪽 픽셀에 해당하는 바닥의 위치를 계산해야 합니다. 즉, 카메라로부터 쏘아올려진 작은 광선이 카메라 평면의 픽셀을 통과하여 바닥(floor)에 부딪히는 것을 계산해야 한다는 뜻입니다. (아직 포기하지 마세요, 저도 문과입니다.) 이를 위한 공식은, 바닥캐스팅 코드에서 자세하게 설명하겠습니다.
 
