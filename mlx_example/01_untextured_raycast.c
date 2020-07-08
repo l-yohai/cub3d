@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   untextured_raycast.c                               :+:      :+:    :+:   */
+/*   01_untextured_raycast.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 12:12:25 by yohan             #+#    #+#             */
-/*   Updated: 2020/07/05 23:05:01 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/08 23:58:13 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../mlx/mlx.h"
-#include "../key_linux.h"
+#include "mlx_linux/mlx.h"
+#include "key_linux.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -44,7 +44,6 @@ typedef struct	s_info
 	void	*mlx;
 	void	*win;
 	t_img	img;
-
 
 	double	moveSpeed;
 	double	rotSpeed;

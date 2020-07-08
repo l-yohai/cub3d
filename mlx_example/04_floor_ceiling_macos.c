@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sprite_macos.c                                     :+:      :+:    :+:   */
+/*   04_floor_ceiling_macos.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/29 20:28:54 by yohlee            #+#    #+#             */
-/*   Updated: 2020/06/29 21:39:56 by yohlee           ###   ########.fr       */
+/*   Created: 2020/06/29 19:53:20 by yohlee            #+#    #+#             */
+/*   Updated: 2020/07/09 00:11:07 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#define X_EVENT_KEY_PRESS	2
+#define X_EVENT_KEY_EXIT	17
 #define texWidth 64
 #define texHeight 64
 #define mapWidth 24
 #define mapHeight 24
 #define width 640
 #define height 480
-#define numSprites 19
 
 typedef struct	s_img
 {
@@ -37,41 +37,6 @@ typedef struct	s_img
 	int		img_height;
 }				t_img;
 
-typedef struct	s_sprite
-{
-	double		x;
-	double		y;
-	int			texture;
-}				t_sprite;
-
-t_sprite	sprite[numSprites] =
-{
-	{20.5, 11.5, 10}, //green light in front of playerstart
-	//green lights in every room
-	{18.5,4.5, 10},
-	{10.0,4.5, 10},
-	{10.0,12.5,10},
-	{3.5, 6.5, 10},
-	{3.5, 20.5,10},
-	{3.5, 14.5,10},
-	{14.5,20.5,10},
-
-	//row of pillars in front of wall: fisheye test
-	{18.5, 10.5, 9},
-	{18.5, 11.5, 9},
-	{18.5, 12.5, 9},
-
-	//some barrels around the map
-	{21.5, 1.5, 8},
-	{15.5, 1.5, 8},
-	{16.0, 1.8, 8},
-	{16.2, 1.2, 8},
-	{3.5,  2.5, 8},
-	{9.5, 15.5, 8},
-	{10.0, 15.1,8},
-	{10.5, 15.8,8},
-};
-
 typedef struct	s_info
 {
 	double posX;
@@ -84,49 +49,12 @@ typedef struct	s_info
 	void	*win;
 	t_img	img;
 	int		buf[height][width];
-	double	zBuffer[width];
+	// int		texture[8][texHeight * texWidth];
 	int		**texture;
-	int		spriteOrder[numSprites];
-	double	spriteDistance[numSprites];
 
 	double	moveSpeed;
 	double	rotSpeed;
 }				t_info;
-
-typedef struct		s_pair
-{
-	double	first;
-	int		second;
-}					t_pair;
-
-int	static	compare(const void *first, const void *second)
-{
-	if (*(int *)first > *(int *)second)
-		return (1);
-	else if (*(int *)first < *(int *)second)
-		return (-1);
-	else
-		return (0);
-}
-
-void	sortSprites(int *order, double *dist, int amount)
-{
-	t_pair	sprites[amount];
-
-	//std::vector<std::pair<double, int>> sprites(amount);
-	for (int i = 0; i < amount; i++)
-	{
-		sprites[i].first = dist[i];
-		sprites[i].second = order[i];
-	}
-	qsort(sprites, amount, sizeof(int), compare);
-	//std::sort(sprites.begin(), sprites.end());
-	for (int i = 0; i < amount; i++)
-	{
-		dist[i] = sprites[amount - i - 1].first;
-		order[i] = sprites[amount - i - 1].second;
-	}
-}
 
 int	worldMap[mapWidth][mapHeight] =
 									{
@@ -303,7 +231,7 @@ void	calc(t_info *info)
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(height / perpWallDist);
 
-		//calculate lowest and highest pixel to fill in current sprite
+		//calculate lowest and highest pixel to fill in current stripe
 		int drawStart = -lineHeight / 2 + height / 2;
 		if(drawStart < 0)
 			drawStart = 0;
@@ -350,76 +278,61 @@ void	calc(t_info *info)
 			info->buf[y][x] = color;
 		}
 
-		//SET THE ZBUFFER FOR THE SPRITE CASTING
-		info->zBuffer[x] = perpWallDist; //perpendicular distance is used
-	}
+		//FLOOR CASTING (vertical version, directly after drawing the vertical wall stripe for the current x)
+		double floorXWall, floorYWall; //x, y position of the floor texel at the bottom of the wall
 
-	//SPRITE CASTING
-	//sort sprites from far to close
-	for(int i = 0; i < numSprites; i++)
-	{
-		info->spriteOrder[i] = i;
-		info->spriteDistance[i] = ((info->posX - sprite[i].x) * (info->posX - sprite[i].x) + (info->posY - sprite[i].y) * (info->posY - sprite[i].y)); //sqrt not taken, unneeded
-	}
-	sortSprites(info->spriteOrder, info->spriteDistance, numSprites);
-
-	//after sorting the sprites, do the projection and draw them
-	for(int i = 0; i < numSprites; i++)
-	{
-		//translate sprite position to relative to camera
-		double spriteX = sprite[info->spriteOrder[i]].x - info->posX;
-		double spriteY = sprite[info->spriteOrder[i]].y - info->posY;
-
-		//transform sprite with the inverse camera matrix
-		// [ planeX   dirX ] -1                                       [ dirY      -dirX ]
-		// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
-		// [ planeY   dirY ]                                          [ -planeY  planeX ]
-
-		double invDet = 1.0 / (info->planeX * info->dirY - info->dirX * info->planeY); //required for correct matrix multiplication
-
-		double transformX = invDet * (info->dirY * spriteX - info->dirX * spriteY);
-		double transformY = invDet * (-info->planeY * spriteX + info->planeX * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(info->spriteDistance[i])
-
-		int spriteScreenX = (int)((width / 2) * (1 + transformX / transformY));
-
-		//parameters for scaling and moving the sprites
-		#define uDiv 1
-		#define vDiv 1
-		#define vMove 0.0
-		int vMoveScreen = (int)(vMove / transformY);
-
-		//calculate height of the sprite on screen
-		int spriteHeight = (int)fabs(height / (transformY)) / vDiv; //using "transformY" instead of the real distance prevents fisheye
-		//calculate lowest and highest pixel to fill in current stripe
-		int drawStartY = -spriteHeight / 2 + height / 2 + vMoveScreen;
-		if(drawStartY < 0) drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + height / 2 + vMoveScreen;
-		if(drawEndY >= height) drawEndY = height - 1;
-
-		//calculate width of the sprite
-		int spriteWidth = (int)fabs((height / (transformY))) / uDiv;
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0) drawStartX = 0;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= width) drawEndX = width - 1;
-
-		//loop through every vertical stripe of the sprite on screen
-		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+		//4 different wall directions possible
+		if(side == 0 && rayDirX > 0)
 		{
-			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
-			//the conditions in the if are:
-			//1) it's in front of camera plane so you don't see things behind you
-			//2) it's on the screen (left)
-			//3) it's on the screen (right)
-			//4) ZBuffer, with perpendicular distance
-			if(transformY > 0 && stripe > 0 && stripe < width && transformY < info->zBuffer[stripe])
-			for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-			{
-			int d = (y-vMoveScreen) * 256 - height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-			int texY = ((d * texHeight) / spriteHeight) / 256;
-			int color = info->texture[sprite[info->spriteOrder[i]].texture][texWidth * texY + texX]; //get current color from the texture
-			if((color & 0x00FFFFFF) != 0) info->buf[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
-			}
+			floorXWall = mapX;
+			floorYWall = mapY + wallX;
+		}
+		else if(side == 0 && rayDirX < 0)
+		{
+			floorXWall = mapX + 1.0;
+			floorYWall = mapY + wallX;
+		}
+		else if(side == 1 && rayDirY > 0)
+		{
+			floorXWall = mapX + wallX;
+			floorYWall = mapY;
+		}
+		else
+		{
+			floorXWall = mapX + wallX;
+			floorYWall = mapY + 1.0;
+		}
+
+		double distWall, distPlayer, currentDist;
+
+		distWall = perpWallDist;
+		distPlayer = 0.0;
+
+		if (drawEnd < 0) drawEnd = height; //becomes < 0 when the integer overflows
+
+		//draw the floor from drawEnd to the bottom of the screen
+		for(int y = drawEnd + 1; y < height; y++)
+		{
+			currentDist = height / (2.0 * y - height); //you could make a small lookup table for this instead
+
+			double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+			double currentFloorX = weight * floorXWall + (1.0 - weight) * info->posX;
+			double currentFloorY = weight * floorYWall + (1.0 - weight) * info->posY;
+
+			int floorTexX, floorTexY;
+			floorTexX = (int)(currentFloorX * texWidth) % texWidth;
+			floorTexY = (int)(currentFloorY * texHeight) % texHeight;
+
+			int checkerBoardPattern = ((int)(currentFloorX) + (int)(currentFloorY)) % 2;
+			int floorTexture;
+			if(checkerBoardPattern == 0) floorTexture = 3;
+			else floorTexture = 4;
+
+			//floor
+			info->buf[y][x] = (info->texture[floorTexture][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
+			//ceiling (symmetrical!)
+			info->buf[height - y][x] = info->texture[6][texWidth * floorTexY + floorTexX];
 		}
 	}
 }
@@ -529,9 +442,9 @@ int	main(void)
 		}
 	}
 
-	if (!(info.texture = (int **)malloc(sizeof(int *) * 11)))
+	if (!(info.texture = (int **)malloc(sizeof(int *) * 8)))
 		return (-1);
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		if (!(info.texture[i] = (int *)malloc(sizeof(int) * (texHeight * texWidth))))
 			return (-1);

@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   floor_ceilling_macos.c                             :+:      :+:    :+:   */
+/*   04_floor_ceiling_linux.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 19:53:20 by yohlee            #+#    #+#             */
-/*   Updated: 2020/06/29 20:21:39 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/09 00:11:03 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx/mlx.h"
-#include "key_macos.h"
+#include "mlx_linux/mlx.h"
+#include "key_linux.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#define X_EVENT_KEY_PRESS	2
+#define X_EVENT_KEY_EXIT	17
 #define texWidth 64
 #define texHeight 64
 #define mapWidth 24
@@ -467,7 +468,7 @@ int	main(void)
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
 
 	mlx_loop_hook(info.mlx, &main_loop, &info);
-	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
+	mlx_hook(info.win, X_EVENT_KEY_PRESS, 1L << 0, &key_press, &info);
 
 	mlx_loop(info.mlx);
 }

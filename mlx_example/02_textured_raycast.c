@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   textured_raycast.c                                 :+:      :+:    :+:   */
+/*   02_textured_raycast.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 15:18:03 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/05 23:18:34 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/08 23:58:18 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../mlx/mlx.h"
+#include "../mlx_linux/mlx.h"
 #include "../key_linux.h"
 #include <math.h>
 #include <string.h>

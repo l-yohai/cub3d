@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   img_textured_raycast.c                             :+:      :+:    :+:   */
+/*   03_img_textured_raycast_macos.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 15:18:03 by yohlee            #+#    #+#             */
-/*   Updated: 2020/06/28 22:49:32 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/09 00:08:13 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx/mlx.h"
-#include "key_linux.h"
+#include "key_macos.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#define X_EVENT_KEY_PRESS	2
+#define X_EVENT_KEY_EXIT	17
 #define texWidth 64
 #define texHeight 64
 #define mapWidth 24
@@ -263,120 +264,42 @@ int	key_press(int key, t_info *info)
 		info->planeX = info->planeX * cos(info->rotSpeed) - info->planeY * sin(info->rotSpeed);
 		info->planeY = oldPlaneX * sin(info->rotSpeed) + info->planeY * cos(info->rotSpeed);
 	}
+	if (key == K_ESC)
+		exit(0);
 	return (0);
 }
 
-int		get_color(t_img *idata)
+int	*load_image(t_info *info, char *path, t_img *img)
 {
-	int		result;
-	int		max;
-	int		i;
+	int		*res;
 
-	result = 0;
-	i = 0;
-	max = idata->bpp / 8;
-	while (i < max)
+	img->img = mlx_xpm_file_to_image(info->mlx, path, &img->img_width, &img->img_height);
+	img->data = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->size_l, &img->endian);
+
+	res = (int *)malloc(sizeof(int) * (img->img_width * img->img_height));
+	for (int y = 0; y < img->img_height; y++)
 	{
-		result *= 256;
-		if (idata->endian == 0)
-			result += (int)(idata->data[max - 1 - i]);
-		else
-			result += (int)(idata->data[i]);
-		i++;
-	}
-	idata->data += max;
-	return (result);
-}
-
-int		get_image_data(t_img *idata, void *img)
-{
-	idata->data = (int *)mlx_get_data_addr(img, &idata->bpp, \
-			&idata->size_l, &idata->endian);
-	if (idata->data)
-		return (1);
-	return (0);
-}
-
-int		*create_texture(t_img *idata)
-{
-	int		*result;
-	int		x;
-	int		y;
-
-	if (!(result = (int *)malloc(sizeof(int) * (idata->img_width * idata->img_height))))
-		return (0);
-	y = 0;
-	while (y < idata->img_height)
-	{
-		x = 0;
-		while (x < idata->img_width)
+		for (int x = 0; x < img->img_width; x++)
 		{
-			result[idata->img_width * y + x] = get_color(idata);
-			x++;
+			res[img->img_width * y + x] = img->data[img->img_width * y + x];
 		}
-		y++;
 	}
-	return (result);
+	mlx_destroy_image(info->mlx, img->img);
+	return (res);
 }
-
-int		*load_image(void *mlx_ptr, char *path, t_img *idata)
-{
-	void	*img;
-	int		*result;
-
-	if (!(img = mlx_xpm_file_to_image(mlx_ptr, path,\
-					&(idata->img_width), &(idata->img_height))))
-		return (0);
-	if (!(get_image_data(idata, img)))
-		return (0);
-	result = create_texture(idata);
-	mlx_destroy_image(mlx_ptr, img);
-	return (result);
-}
-
-// int		load_texture(t_info *info)
-// {
-// 	t_img	idata;
-
-// 	info->texture[0] = load_image(info->mlx, "textures/eagle.xpm", &idata);
-// 	info->texture[1] = load_image(info->mlx, "textures/redbrick.xpm", &idata);
-// 	info->texture[2] = load_image(info->mlx, "textures/purplestone.xpm", &idata);
-// 	info->texture[3] = load_image(info->mlx, "textures/greystone.xpm", &idata);
-// 	info->texture[4] = load_image(info->mlx, "textures/bluestone.xpm", &idata);
-// 	info->texture[5] = load_image(info->mlx, "textures/mossy.xpm", &idata);
-// 	info->texture[6] = load_image(info->mlx, "textures/wood.xpm", &idata);
-// 	info->texture[7] = load_image(info->mlx, "textures/colorstone.xpm", &idata);
-
-// 	return (1);
-// }
 
 void	load_texture(t_info *info)
 {
 	t_img	img;
-	int		*res;
 
-	img.img = mlx_xpm_file_to_image(info->mlx, "textures/greystone.xpm", &img.img_width, &img.img_height);
-	img.data = (int *)mlx_get_data_addr(img.img, &img.bpp, &img.size_l, &info->img.endian);
-
-	res = (int *)malloc(sizeof(int) * (img.img_width * img.img_height));
-	for (int y = 0; y < img.img_height; y++)
-	{
-		for (int x = 0; x < img.img_width; x++)
-		{
-			res[img.img_width * y + x] = img.data[img.img_width * y + x]; //get_color(&img);
-		}
-	}
-	info->texture[0] = res;
-	mlx_destroy_image(info->mlx, img.img);
-	
-
-	info->texture[1] = res;
-	info->texture[2] = res;
-	info->texture[3] = res;
-	info->texture[4] = res;
-	info->texture[5] = res;
-	info->texture[6] = res;
-	info->texture[7] = res;
+	info->texture[0] = load_image(info, "textures/eagle.xpm", &img);
+	info->texture[1] = load_image(info, "textures/redbrick.xpm", &img);
+	info->texture[2] = load_image(info, "textures/purplestone.xpm", &img);
+	info->texture[3] = load_image(info, "textures/greystone.xpm", &img);
+	info->texture[4] = load_image(info, "textures/bluestone.xpm", &img);
+	info->texture[5] = load_image(info, "textures/mossy.xpm", &img);
+	info->texture[6] = load_image(info, "textures/wood.xpm", &img);
+	info->texture[7] = load_image(info, "textures/colorstone.xpm", &img);
 }
 
 
@@ -426,7 +349,7 @@ int	main(void)
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
 
 	mlx_loop_hook(info.mlx, &main_loop, &info);
-	mlx_hook(info.win, X_EVENT_KEY_PRESS, 1L << 0, &key_press, &info);
+	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 
 	mlx_loop(info.mlx);
 }
