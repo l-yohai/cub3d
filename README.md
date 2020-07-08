@@ -1,7 +1,5 @@
 # cub3d 및 raycasting tutorial
 
-### 사전안내
-
 이 자료는 taelee님의 mlx_example(https://github.com/taelee42/mlx_example) 자료와 365kim님의 raycasting_tutorial(https://github.com/365kim/raycasting_tutorial) 자료를 참고하여 만들어졌습니다.
 
 그리고 365kim님이 번역하신 이후의 부분들을 번역하였습니다.
