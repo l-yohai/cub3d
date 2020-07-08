@@ -348,6 +348,7 @@ int main(int /*argc*/, char */*argv*/[])
 ```
 
 이 코드를 실행하면 이제 이렇게 보일겁니다.
+
 ![image](https://user-images.githubusercontent.com/49181231/86939065-145d8480-c17c-11ea-9d65-82edc921c46d.png)
 
 여기서 만든 벽과 바닥 레이캐스팅 코드는, 고해상도에서 매우 느리고 최적화의 여지가 남아있어요.
@@ -414,8 +415,10 @@ int main(int /*argc*/, char */*argv*/[])
 ```
 
 비슷한 방법으로 각 타일의 바닥 질감을 다르게 선택할 수도 있겠죠. currentFloorX의 정수 부분은 현재 맵에서 바닥질감을 선택하는 좌표로 사용되고, 실수부분은 텍스쳐에 texel 좌표로 사용됩니다.
+
 ![image](https://user-images.githubusercontent.com/49181231/86940179-74a0f600-c17d-11ea-86fe-2b5c8c74d32a.png)
 
 
 체크무늬 패턴부분 코드를 "(int(currentFloorX) + int(currentFloorY)) % 2" into "(int(currentFloorX + currentFloorY)) % 2" 이렇게 수정하면, 체크무늬가 아니라 대각선 무늬를 표현할 수 있습니다.
+
 ![image](https://user-images.githubusercontent.com/49181231/86940204-7b2f6d80-c17d-11ea-89e3-8ee1a137938a.png)
