@@ -13,6 +13,7 @@
 <br>
 <br>
 
+---
 ### 번역보기
 
 - Floor_ceiling(https://github.com/yohan9612/cub3d/blob/master/mlx_example/floor_ceiling.md)
@@ -20,6 +21,7 @@
 <br>
 <br>
 
+---
 ### 안내
 
 Cub3d 과제를 하면서 많이 참고하시는 lodev(https://lodev.org/cgtutor/raycasting.html)사이트의 예제코드는 C++과 SDL 모듈을 이용하여 만들어져 있습니다. 
@@ -30,6 +32,7 @@ Cub3d 과제를 하면서 많이 참고하시는 lodev(https://lodev.org/cgtutor
 <br>
 <br>
 
+---
 ### 주요함수설명
 
 #### 01_untextured_raycast
@@ -51,6 +54,7 @@ void	verLine(t_info *info, int x, int y1, int y2, int color)
 ```
 - untextured_raycasting에서는 SDL의 verLine()함수를 이용하여 픽셀별로 이미지를 그려냅니다.
 - - mimilibx에서는 mlx_pixel_put() 함수를 이용합니다.
+<br>
 
 #### 02_textured_raycast
 
@@ -70,6 +74,7 @@ void	draw(t_info *info)
 }
 ```
 - textured_raycasting에서는 픽셀별로 이미지를 찍는 방식이 아니라 버퍼에 데이터를 담고 mlx_put_image_to_window() 함수를 이용하여 버퍼에 담긴 이미지를 한 번에 출력합니다.
+<br>
 
 #### 03_img_textured_raycast
 
@@ -94,6 +99,7 @@ int	*load_image(t_info *info, char *path, t_img *img)
 }
 ```
 - img_textured_raycasting에서는 벽의 질감표현을 위해 xpm 이미지를 로드합니다. 이 때 mlx_xpm_file_to_image() 함수와 mlx_get_data_addr()함수를 이용하여 이미지를 받아온 이후, 여러 이미지를 받아와야 하기 때문에 mlx_destory_image()함수를 이용하여 이미지 데이터를 제거해줍니다.
+<br>
 
 #### 04_floor_ceiling_raycast
 
@@ -116,6 +122,7 @@ for(int x = 0; x < width; ++x)
 
 - floor_ceiling 부분에서는 대부분의 로직이 이전 코드와 동일하지만, 벽은 수직으로 캐스팅을 시켰다면, 천장과 바닥은 수평으로 캐스팅을 시키는데, 이 부분이 추가되었습니다.
 - 여기부터는 제 번역본을 읽어보시면 도움이 될 것 같습니다.
+<br>
 
 #### 05_sprite_raycast
 
@@ -138,6 +145,7 @@ for(int stripe = drawStartX; stripe < drawEndX; stripe++)
 
 - sprite를 처리하는 부분에서도 대부분 이전 코드와 동일하지만, sprite들을 정렬하고, 이미지에 담는 코드가 추가되었습니다.
 
+---
 ### 번역안내
 
 - [__Lode's Computer Graphics Tutorial__ (튜토리얼 원문)](https://lodev.org/cgtutor/raycasting.html)
