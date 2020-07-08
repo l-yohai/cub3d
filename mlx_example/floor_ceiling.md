@@ -117,7 +117,7 @@ int main(int /*argc*/, char */*argv*/[])
 
 참고: 이 단계적인 작업은 텍스쳐를 맵핑(mapping)하는 단계입니다. 이 맵핑은 한 픽셀을 여러 각도로 계산하는 것이 아닌 두 점을 이용한 직선으로 계산한다는 것인데, 원근법적 이유로 정확한 계산법은 아니지만, 저희가 구현해야할 것은 바닥과 천장이 완벽하게 수평이고 벽에 완벽하게 수직이기 때문에 이용할 수 있는 계산이에요.
 
-```
+``` C
     //FLOOR CASTING
     for(int y = 0; y < h; y++)
     {
@@ -181,7 +181,7 @@ int main(int /*argc*/, char */*argv*/[])
 
 벽 캐스팅은 바닥캐스팅 직후에 시작합니다. 바닥과 천장을 캐스팅하는 것처럼 수평선이 아닌 수직선을 이용하기 때문입니다.
 
-```
+``` C
     //WALL CASTING
     for(int x = 0; x < w; x++)
     {
@@ -294,7 +294,7 @@ int main(int /*argc*/, char */*argv*/[])
 ```
 
 마지막으로 스크린이 다 그려졌으면, 지우고나서 키를 핸들링합니다. 이 코드도 이전과 똑같아요.
-```
+``` C
     drawBuffer(buffer[0]);
     for(int y = 0; y < h; y++) for(int x = 0; x < w; x++) buffer[y][x] = 0; //clear the buffer instead of cls()
 
@@ -361,13 +361,13 @@ int main(int /*argc*/, char */*argv*/[])
 
 바닥과 천장 텍스쳐의 크기를 조정하려면 (예를들어 무늬를 4배 더 확대하겠다!) 이 부분을 수정하시면 됩니다.
 
-```
+``` C
         int floorTexX, floorTexY;
         floorTexX = int(currentFloorX * texWidth) % texWidth;
         floorTexY = int(currentFloorY * texHeight) % texHeight;
 ```
 이것을
-```
+``` C
         int floorTexX, floorTexY;
         floorTexX = int(currentFloorX * texWidth / 4) % texWidth;
         floorTexY = int(currentFloorY * texHeight / 4) % texHeight;
@@ -386,7 +386,7 @@ int main(int /*argc*/, char */*argv*/[])
 현재 맵의 좌표를 얻고 싶으면 currentFloorX와 currentFloorY가 나타나는 부분을, 아래와 같이 변경하면 됩니다.
 
 
-```
+``` C
       //draw the floor from drawEnd to the bottom of the screen
       for(int y = drawEnd + 1; y < h; y++)
       {
