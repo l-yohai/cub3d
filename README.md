@@ -1,6 +1,6 @@
 # cub3d 및 raycasting tutorial
 
-이 자료는 taelee님의 mlx_example(https://github.com/taelee42/mlx_example) 자료와 365kim님의 raycasting_tutorial(https://github.com/365kim/raycasting_tutorial) 자료를 참고하여 만들어졌습니다.
+이 자료는 taelee님의 [mlx_example](https://github.com/taelee42/mlx_example) 자료와 365kim님의 [raycasting_tutorial](https://github.com/365kim/raycasting_tutorial) 자료를 참고하여 만들어졌습니다.
 
 그리고 365kim님이 번역하신 이후의 부분들을 번역하였습니다.
 
@@ -16,15 +16,15 @@
 ---
 ### 번역보기
 
-- Floor_ceiling(https://github.com/yohan9612/cub3d/blob/master/mlx_example/floor_ceiling.md)
-- Sprite(https://github.com/yohan9612/cub3d/blob/master/mlx_example/sprite.md)
+- [Floor_ceiling](https://github.com/yohan9612/cub3d/blob/master/mlx_example/floor_ceiling.md)
+- [Sprite](https://github.com/yohan9612/cub3d/blob/master/mlx_example/sprite.md)
 <br>
 <br>
 
 ---
 ### 안내
 
-Cub3d 과제를 하면서 많이 참고하시는 lodev(https://lodev.org/cgtutor/raycasting.html)사이트의 예제코드는 C++과 SDL 모듈을 이용하여 만들어져 있습니다. 
+Cub3d 과제를 하면서 많이 참고하시는 [lodev](https://lodev.org/cgtutor/raycasting.html)사이트의 예제코드는 C++과 SDL 모듈을 이용하여 만들어져 있습니다. 
 
 저처럼 C++를 모르거나, 레이캐스팅에 대한 번역문을 아무리 읽어보아도 이해하기 힘든 분들을 위해서 위 사이트의 예제코드를 C와 minilibx를 이용하여 변환시킨 예제를 만들어 보았습니다.
 
