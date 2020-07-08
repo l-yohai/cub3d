@@ -534,16 +534,21 @@ int main(int /*argc*/, char */*argv*/[])
 ```
 
 uDiv = 2, vDiv = 2, vMove = 0.0 일 때 스프라이트
+
 ![image](https://user-images.githubusercontent.com/49181231/86944530-d7e15700-c182-11ea-8331-d77791edd4a3.png)
 
 vMove가 64.0일 때
+
 ![image](https://user-images.githubusercontent.com/49181231/86944548-de6fce80-c182-11ea-962d-4492afed7302.png)
 
 스프라이트가 바닥에 붙어있기 위해 vMove를 더 크게 만든다면, 땅 속에 박혀있는 것처럼 보일거에요. ZBuffer는 일차원 배열이고, 스프라이트가 벽 앞이나 뒤에 있을 때만 감지할 수 있기 때문이죠.
+
 ![image](https://user-images.githubusercontent.com/49181231/86944569-e4fe4600-c182-11ea-8d07-8a5f7996bde3.png)
 
 물론 통의 크기를 줄임으로써, 그린라이트도 낮아져서 천장에서 떨어지게 됐어요. 이를 해결하기 위해서는 고유한 uDiv, vDiv, vMove 변수를 지정해야 하는데, 한가지 힌트는 스프라이트 구조체에 넣고 같이 사용하는 거에요.
+
 ![image](https://user-images.githubusercontent.com/49181231/86944573-e7f93680-c182-11ea-97f6-747574905edb.png)
+
 <br>
 <br>
 
