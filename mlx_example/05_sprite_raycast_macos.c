@@ -476,37 +476,32 @@ int	key_press(int key, t_info *info)
 	return (0);
 }
 
-int	*load_image(t_info *info, char *path, t_img *img)
+void	load_image(t_info *info, int *texture, char *path, t_img *img)
 {
-	int		*res;
-
 	img->img = mlx_xpm_file_to_image(info->mlx, path, &img->img_width, &img->img_height);
 	img->data = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->size_l, &img->endian);
-
-	res = (int *)malloc(sizeof(int) * (img->img_width * img->img_height));
 	for (int y = 0; y < img->img_height; y++)
 	{
 		for (int x = 0; x < img->img_width; x++)
 		{
-			res[img->img_width * y + x] = img->data[img->img_width * y + x];
+			texture[img->img_width * y + x] = img->data[img->img_width * y + x];
 		}
 	}
 	mlx_destroy_image(info->mlx, img->img);
-	return (res);
 }
 
 void	load_texture(t_info *info)
 {
 	t_img	img;
 
-	info->texture[0] = load_image(info, "textures/eagle.xpm", &img);
-	info->texture[1] = load_image(info, "textures/redbrick.xpm", &img);
-	info->texture[2] = load_image(info, "textures/purplestone.xpm", &img);
-	info->texture[3] = load_image(info, "textures/greystone.xpm", &img);
-	info->texture[4] = load_image(info, "textures/bluestone.xpm", &img);
-	info->texture[5] = load_image(info, "textures/mossy.xpm", &img);
-	info->texture[6] = load_image(info, "textures/wood.xpm", &img);
-	info->texture[7] = load_image(info, "textures/colorstone.xpm", &img);
+	load_image(info, info->texture[0], "textures/eagle.xpm", &img);
+	load_image(info, info->texture[1], "textures/redbrick.xpm", &img);
+	load_image(info, info->texture[2], "textures/purplestone.xpm", &img);
+	load_image(info, info->texture[3], "textures/greystone.xpm", &img);
+	load_image(info, info->texture[4], "textures/bluestone.xpm", &img);
+	load_image(info, info->texture[5], "textures/mossy.xpm", &img);
+	load_image(info, info->texture[6], "textures/wood.xpm", &img);
+	load_image(info, info->texture[7], "textures/colorstone.xpm", &img);
 }
 
 
