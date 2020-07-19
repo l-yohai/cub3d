@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   02_textured_raycast.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 15:18:03 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/08 23:58:18 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/19 09:18:27 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../mlx_linux/mlx.h"
-#include "../key_linux.h"
+#include "../mlx/mlx.h"
+#include "key_macos.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -321,7 +321,7 @@ int	main(void)
 	info.moveSpeed = 0.05;
 	info.rotSpeed = 0.05;
 	
-	info.win = mlx_new_window(info.mlx, 640, 480, "mlx");
+	info.win = mlx_new_window(info.mlx, width, height, "mlx");
 
 	info.img.img = mlx_new_image(info.mlx, width, height);
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
