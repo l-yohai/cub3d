@@ -39,8 +39,7 @@ Cub3d 과제를 하면서 많이 참고하시는 [lodev](https://lodev.org/cgtut
 ### 주요함수설명
 
 * linux에서 사용을 원하시는 분은 https://github.com/ilkou/minilibx 링크를 참조하여 필요한 모듈을 다운로드 받으시길 바랍니다.
-
-* 본 코드를 linux환경에서 사용하실 분은 아래와 같이 변경해주시면 됩니다.
+* mlx_linux, key_linux, Xdev, Xming을 모두 설치하신 이후 아래와 같이 변경해주시면 됩니다.
 ```C
 #include "mlx/mlx.h"
 -> #include "mlx_linux/mlx.h"
