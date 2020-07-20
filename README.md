@@ -94,7 +94,7 @@ void	draw(t_info *info)
 - textured_raycasting에서는 픽셀별로 이미지를 찍는 방식이 아니라 버퍼에 데이터를 담고 mlx_put_image_to_window() 함수를 이용하여 버퍼에 담긴 이미지를 한 번에 출력합니다.
 <br>
 
-#### [03_img_textured_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/03_img_textured_raycast_macos.c)
+#### [03_img_textured_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/03_img_textured_raycast.c)
 
 ``` C
 int	*load_image(t_info *info, char *path, t_img *img)
@@ -119,7 +119,7 @@ int	*load_image(t_info *info, char *path, t_img *img)
 - img_textured_raycasting에서는 벽의 질감표현을 위해 xpm 이미지를 로드합니다. 이 때 mlx_xpm_file_to_image() 함수와 mlx_get_data_addr()함수를 이용하여 이미지를 받아온 이후, 여러 이미지를 받아와야 하기 때문에 mlx_destory_image()함수를 이용하여 이미지 데이터를 제거해줍니다.
 <br>
 
-#### [04_floor_ceiling_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/04_floor_ceiling_macos.c)
+#### [04_floor_ceiling_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/04_floor_ceiling.c)
 
 ``` C
 for(int x = 0; x < width; ++x)
@@ -142,7 +142,7 @@ for(int x = 0; x < width; ++x)
 - 여기부터는 제 번역본을 읽어보시면 도움이 될 것 같습니다.
 <br>
 
-#### [05_sprite_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/05_sprite_raycast_macos.c)
+#### [05_sprite_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/05_sprite_raycast.c)
 
 ``` C
 //loop through every vertical stripe of the sprite on screen
