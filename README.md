@@ -1,5 +1,12 @@
 # cub3d 및 raycasting tutorial
 
+### 20.07.21 Update
+* macos 코드들에서 segmentation fault가 나오는 부분들 수정
+* 일부 코드에서 s키가 작동하지 않았던 오류 수정
+* esc키 눌렀을 시 종료시키는 코드 추가
+
+<br>
+
 ### 안내
 
 이 자료는 taelee님의 [mlx_example](https://github.com/taelee42/mlx_example) 자료와 365kim님의 [raycasting_tutorial](https://github.com/365kim/raycasting_tutorial) 자료를 참고하여 만들어졌습니다.
