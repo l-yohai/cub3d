@@ -57,6 +57,7 @@ linux
 gcc ~.c -Lmlx_linux -lmlx -lXext -lX11
 ```
 
+
 #### [01_untextured_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/01_untextured_raycast.c)
 
 ``` C
