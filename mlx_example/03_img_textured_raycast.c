@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   03_img_textured_raycast.c                          :+:      :+:    :+:   */
+/*   03_img_textured_raycast_macos.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 15:18:03 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/09 00:09:04 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/21 08:10:51 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_linux/mlx.h"
-#include "key_linux.h"
+#include "mlx/mlx.h"
+#include "key_macos.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -50,7 +50,6 @@ typedef struct	s_info
 	t_img	img;
 	int		buf[height][width];
 	int		**texture;
-
 	double	moveSpeed;
 	double	rotSpeed;
 }				t_info;
@@ -236,9 +235,9 @@ int	key_press(int key, t_info *info)
 	//move backwards if no wall behind you
 	if (key == K_S)
 	{
-		if (worldMap[(int)(info->posX - info->dirX * info->moveSpeed)][(int)(info->posY)])
+		if (!worldMap[(int)(info->posX - info->dirX * info->moveSpeed)][(int)(info->posY)])
 			info->posX -= info->dirX * info->moveSpeed;
-		if (worldMap[(int)(info->posX)][(int)(info->posY - info->dirY * info->moveSpeed)])
+		if (!worldMap[(int)(info->posX)][(int)(info->posY - info->dirY * info->moveSpeed)])
 			info->posY -= info->dirY * info->moveSpeed;
 	}
 	//rotate to the right
@@ -296,7 +295,6 @@ void	load_texture(t_info *info)
 	load_image(info, info->texture[7], "textures/colorstone.xpm", &img);
 }
 
-
 int	main(void)
 {
 	t_info info;
@@ -337,13 +335,13 @@ int	main(void)
 	info.moveSpeed = 0.05;
 	info.rotSpeed = 0.05;
 	
-	info.win = mlx_new_window(info.mlx, 640, 480, "mlx");
+	info.win = mlx_new_window(info.mlx, width, height, "mlx");
 
 	info.img.img = mlx_new_image(info.mlx, width, height);
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
 
 	mlx_loop_hook(info.mlx, &main_loop, &info);
-	mlx_hook(info.win, X_EVENT_KEY_PRESS, 1L << 0, &key_press, &info);
+	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 
 	mlx_loop(info.mlx);
 }

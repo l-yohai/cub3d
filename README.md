@@ -31,9 +31,33 @@ Cub3d 과제를 하면서 많이 참고하시는 [lodev](https://lodev.org/cgtut
 ---
 ### 주요함수설명
 
-#### [01_untextured_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/01_untextured_raycast.c)
+* linux에서 사용을 원하시는 분은 https://github.com/ilkou/minilibx 링크를 참조하여 필요한 모듈을 다운로드 받으시길 바랍니다.
 
-* linux 버전만 있습니다. macos에서 사용을 원하시는 분은 include부분을 변경하시고 mlx_hook에서의 1L << 0을 0으로 바꾸시기만 하면 됩니다.
+* 본 코드를 linux환경에서 사용하실 분은 아래와 같이 변경해주시면 됩니다.
+```C
+#include "mlx/mlx.h"
+-> #include "mlx_linux/mlx.h"
+
+#include "key_macos.h"
+-> #include "key_linux.h"
+
+mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
+-> mlx_hook(info.win, X_EVENT_KEY_PRESS, 1L << 0, &key_press, &info);
+```
+
+* 컴파일
+
+macos
+```
+gcc ~.c -Lmlx -lmlx -framework OpenGL -framework Appkit
+```
+
+linux
+```
+gcc ~.c -Lmlx_linux -lmlx -lXext -lX11
+```
+
+#### [01_untextured_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/01_untextured_raycast.c)
 
 ``` C
 void	verLine(t_info *info, int x, int y1, int y2, int color)
@@ -53,8 +77,6 @@ void	verLine(t_info *info, int x, int y1, int y2, int color)
 <br>
 
 #### [02_textured_raycast](https://github.com/yohan9612/cub3d/blob/master/mlx_example/02_textured_raycast.c)
-
-* linux 버전만 있습니다. macos에서 사용을 원하시는 분은 include부분을 변경하시고 mlx_hook에서의 1L << 0을 0으로 바꾸시기만 하면 됩니다.
 
 ``` C
 void	draw(t_info *info)

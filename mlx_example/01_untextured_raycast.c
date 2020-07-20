@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   01_untextured_raycast.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 12:12:25 by yohan             #+#    #+#             */
-/*   Updated: 2020/07/08 23:58:13 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/21 08:08:19 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_linux/mlx.h"
-#include "key_linux.h"
+#include "mlx/mlx.h"
+#include "key_macos.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -23,16 +23,6 @@
 #define width 640
 #define height 480
 
-typedef struct	s_img
-{
-	void	*img;
-	int		*data;
-
-	int		size_l;
-	int		bpp;
-	int		endian;
-}				t_img;
-
 typedef struct	s_info
 {
 	double posX;
@@ -43,8 +33,6 @@ typedef struct	s_info
 	double planeY;
 	void	*mlx;
 	void	*win;
-	t_img	img;
-
 	double	moveSpeed;
 	double	rotSpeed;
 }				t_info;
@@ -194,7 +182,6 @@ void	calc(t_info *info)
 	}
 }
 
-
 int	main_loop(t_info *info)
 {
 	calc(info);
@@ -215,9 +202,9 @@ int	key_press(int key, t_info *info)
 	//move backwards if no wall behind you
 	if (key == K_S)
 	{
-		if (worldMap[(int)(info->posX - info->dirX * info->moveSpeed)][(int)(info->posY)])
+		if (!worldMap[(int)(info->posX - info->dirX * info->moveSpeed)][(int)(info->posY)])
 			info->posX -= info->dirX * info->moveSpeed;
-		if (worldMap[(int)(info->posX)][(int)(info->posY - info->dirY * info->moveSpeed)])
+		if (!worldMap[(int)(info->posX)][(int)(info->posY - info->dirY * info->moveSpeed)])
 			info->posY -= info->dirY * info->moveSpeed;
 	}
 	//rotate to the right
@@ -242,6 +229,8 @@ int	key_press(int key, t_info *info)
 		info->planeX = info->planeX * cos(info->rotSpeed) - info->planeY * sin(info->rotSpeed);
 		info->planeY = oldPlaneX * sin(info->rotSpeed) + info->planeY * cos(info->rotSpeed);
 	}
+	if (key == K_ESC)
+		exit(0);
 	return (0);
 }
 
@@ -259,13 +248,10 @@ int	main(void)
 	info.moveSpeed = 0.05;
 	info.rotSpeed = 0.05;
 	
-	info.win = mlx_new_window(info.mlx, 640, 480, "mlx");
-
-	info.img.img = mlx_new_image(info.mlx, width, height);
-	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
+	info.win = mlx_new_window(info.mlx, width, height, "mlx");
 
 	mlx_loop_hook(info.mlx, &main_loop, &info);
-	mlx_hook(info.win, X_EVENT_KEY_PRESS, 1L << 0, &key_press, &info);
+	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 
 	mlx_loop(info.mlx);
 }
