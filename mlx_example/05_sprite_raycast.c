@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   05_sprite_raycast_macos.c                          :+:      :+:    :+:   */
+/*   05_sprite_raycast.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hakang <hakang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:28:54 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/21 08:12:03 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/07/27 13:57:18 by hakang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define X_EVENT_KEY_PRESS	2
+# define X_EVENT_KEY_RELEASE	3
 #define X_EVENT_KEY_EXIT	17
 #define texWidth 64
 #define texHeight 64
@@ -86,6 +87,11 @@ typedef struct	s_info
 	double planeY;
 	void	*mlx;
 	void	*win;
+	int		key_a;
+	int		key_w;
+	int		key_s;
+	int		key_d;
+	int		key_esc;
 	t_img	img;
 	int		buf[height][width];
 	double	zBuffer[width];
@@ -100,6 +106,8 @@ typedef struct		s_pair
 	int		second;
 }					t_pair;
 
+void	key_update(t_info *info);
+
 static int	compare(const void *first, const void *second)
 {
 	if (*(int *)first > *(int *)second)
@@ -110,23 +118,46 @@ static int	compare(const void *first, const void *second)
 		return (0);
 }
 
+void	sort_order(t_pair *orders, int amount)
+{
+	t_pair	tmp;
+
+	for (int i = 0; i < amount; i++)
+	{
+		for (int j = 0; j < amount - 1; j++)
+		{
+			if (orders[j].first > orders[j + 1].first)
+			{
+				tmp.first = orders[j].first;
+				tmp.second = orders[j].second;
+				orders[j].first = orders[j + 1].first;
+				orders[j].second = orders[j + 1].second;
+				orders[j + 1].first = tmp.first;
+				orders[j + 1].second = tmp.second;
+			}
+		}
+	}
+}
+
 void	sortSprites(int *order, double *dist, int amount)
 {
-	t_pair	sprites[amount];
+	t_pair	*sprites;
 
 	//std::vector<std::pair<double, int>> sprites(amount);
+	sprites = (t_pair*)malloc(sizeof(t_pair) * amount);
 	for (int i = 0; i < amount; i++)
 	{
 		sprites[i].first = dist[i];
 		sprites[i].second = order[i];
 	}
-	qsort(sprites, amount, sizeof(int), compare);
+	sort_order(sprites, amount);
 	//std::sort(sprites.begin(), sprites.end());
 	for (int i = 0; i < amount; i++)
 	{
 		dist[i] = sprites[amount - i - 1].first;
 		order[i] = sprites[amount - i - 1].second;
 	}
+	free(sprites);
 }
 
 int	worldMap[mapWidth][mapHeight] =
@@ -330,8 +361,7 @@ void	calc(t_info *info)
 		spriteOrder[i] = i;
 		spriteDistance[i] = ((info->posX - sprite[i].x) * (info->posX - sprite[i].x) + (info->posY - sprite[i].y) * (info->posY - sprite[i].y)); //sqrt not taken, unneeded
 	}
-	// sortSprites(spriteOrder, spriteDistance, numSprites);
-
+	sortSprites(spriteOrder, spriteDistance, numSprites);
 	//after sorting the sprites, do the projection and draw them
 	for(int i = 0; i < numSprites; i++)
 	{
@@ -397,12 +427,13 @@ int	main_loop(t_info *info)
 {
 	calc(info);
 	draw(info);
+	key_update(info);
 	return (0);
 }
 
-int	key_press(int key, t_info *info)
+void	key_update(t_info *info)
 {
-	if (key == K_W)
+	if (info->key_w)
 	{
 		if (!worldMap[(int)(info->posX + info->dirX * info->moveSpeed)][(int)(info->posY)])
 			info->posX += info->dirX * info->moveSpeed;
@@ -410,7 +441,7 @@ int	key_press(int key, t_info *info)
 			info->posY += info->dirY * info->moveSpeed;
 	}
 	//move backwards if no wall behind you
-	if (key == K_S)
+	if (info->key_s)
 	{
 		if (!worldMap[(int)(info->posX - info->dirX * info->moveSpeed)][(int)(info->posY)])
 			info->posX -= info->dirX * info->moveSpeed;
@@ -418,7 +449,7 @@ int	key_press(int key, t_info *info)
 			info->posY -= info->dirY * info->moveSpeed;
 	}
 	//rotate to the right
-	if (key == K_D)
+	if (info->key_d)
 	{
 		//both camera direction and camera plane must be rotated
 		double oldDirX = info->dirX;
@@ -429,7 +460,7 @@ int	key_press(int key, t_info *info)
 		info->planeY = oldPlaneX * sin(-info->rotSpeed) + info->planeY * cos(-info->rotSpeed);
 	}
 	//rotate to the left
-	if (key == K_A)
+	if (info->key_a)
 	{
 		//both camera direction and camera plane must be rotated
 		double oldDirX = info->dirX;
@@ -439,8 +470,37 @@ int	key_press(int key, t_info *info)
 		info->planeX = info->planeX * cos(info->rotSpeed) - info->planeY * sin(info->rotSpeed);
 		info->planeY = oldPlaneX * sin(info->rotSpeed) + info->planeY * cos(info->rotSpeed);
 	}
+	if (info->key_esc)
+		exit(0);
+}
+
+int		key_press(int key, t_info *info)
+{
 	if (key == K_ESC)
 		exit(0);
+	else if (key == K_W)
+		info->key_w = 1;
+	else if (key == K_A)
+		info->key_a = 1;
+	else if (key == K_S)
+		info->key_s = 1;
+	else if (key == K_D)
+		info->key_d = 1;
+	return (0);
+}
+
+int		key_release(int key, t_info *info)
+{
+	if (key == K_ESC)
+		exit(0);
+	else if (key == K_W)
+		info->key_w = 0;
+	else if (key == K_A)
+		info->key_a = 0;
+	else if (key == K_S)
+		info->key_s = 0;
+	else if (key == K_D)
+		info->key_d = 0;
 	return (0);
 }
 
@@ -470,6 +530,9 @@ void	load_texture(t_info *info)
 	load_image(info, info->texture[5], "textures/mossy.xpm", &img);
 	load_image(info, info->texture[6], "textures/wood.xpm", &img);
 	load_image(info, info->texture[7], "textures/colorstone.xpm", &img);
+	load_image(info, info->texture[8], "textures/barrel.xpm", &img);
+	load_image(info, info->texture[9], "textures/pillar.xpm", &img);
+	load_image(info, info->texture[10], "textures/greenlight.xpm", &img);
 }
 
 
@@ -484,6 +547,11 @@ int	main(void)
 	info.dirY = 0.0;
 	info.planeX = 0.0;
 	info.planeY = 0.66;
+	info.key_a = 0;
+	info.key_w = 0;
+	info.key_s = 0;
+	info.key_d = 0;
+	info.key_esc = 0;
 
 	for (int i = 0; i < height; i++)
 	{
@@ -517,9 +585,10 @@ int	main(void)
 
 	info.img.img = mlx_new_image(info.mlx, width, height);
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
-
+	
 	mlx_loop_hook(info.mlx, &main_loop, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
+	mlx_hook(info.win, X_EVENT_KEY_RELEASE, 0, &key_release, &info);
 
 	mlx_loop(info.mlx);
 }
