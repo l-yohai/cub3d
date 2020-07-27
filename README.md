@@ -1,5 +1,9 @@
 # cub3d 및 raycasting tutorial
 
+### 20.07.27 Update
+* 05_sprite_raycast.c 파일의 sort 함수 부분에서 오류가 나던 부분 수정
+* 문제를 찾아서 해결해주신 hakang님 감사합니다.
+
 ### 20.07.21 Update
 * macos 코드들에서 segmentation fault가 나오는 부분들 수정
 * 일부 코드에서 s키가 작동하지 않았던 오류 수정
