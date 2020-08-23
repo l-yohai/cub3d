@@ -6,7 +6,7 @@
 /*   By: yohlee <yohlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:12:27 by yohlee            #+#    #+#             */
-/*   Updated: 2020/07/07 07:25:53 by yohlee           ###   ########.fr       */
+/*   Updated: 2020/08/23 13:21:18 by yohlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	sort(t_info *info)
 		j = i + 1;
 		while (j < info->num_sprite)
 		{
-			if (info->sprite[i].distance > info->sprite[i].distance)
+			if (info->sprite[j].distance > info->sprite[i].distance)
 				max = j;
 			j++;
 		}
