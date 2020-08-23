@@ -1,5 +1,10 @@
 # cub3d 및 raycasting tutorial
 
+### 20.08.23 Update
+* sprite_utils.c 45라인에서 if 조건문 안의 비교구문이 같았던 부분 수정
+* 문제를 찾아주신 hycho님 감사합니다.
+
+
 ### 20.07.27 Update
 * 05_sprite_raycast.c 파일의 sort 함수 부분에서 오류가 나던 부분 수정
 * 문제를 찾아서 해결해주신 hakang님 감사합니다.
