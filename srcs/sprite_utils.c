@@ -36,9 +36,9 @@ void	sort(t_info *info)
 	t_sprite	temp;
 
 	i = 0;
-	max = 0;
 	while (i < info->num_sprite - 1)
 	{
+		max = i;
 		j = i + 1;
 		while (j < info->num_sprite)
 		{
