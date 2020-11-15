@@ -1,5 +1,9 @@
 # cub3d 및 raycasting tutorial
 
+### 20.11.16 Update
+* [Sprite번역](https://github.com/l-yohai/cub3d/blob/master/mlx_example/sprite.md) 중 `스프라이트를 그리기 위해서는 z를 x로 나눈 이후에...` 를 `x를 z로 나눈 이후에 ...` 로 수정하였습니다.
+* 번역오류를 찾아주신 eun-park님 감사합니다.
+
 ### 20.09.09 Update
 * sprite_utils.c sort함수 -> sprite가 겹쳐있을 때 깜빡거리는 문제 수정
 * 문제 찾아서 수정해주신 sungslee님 감사합니다.
