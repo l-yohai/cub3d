@@ -1,5 +1,17 @@
 # cub3d 및 raycasting tutorial
 
+---
+
+***Warning***
+
+본 예제 코드에서는 맵의 방향이 정상적으로 출력되지 않는 (동서남북이 뒤바뀌어 출력됨) 문제가 있습니다.
+
+이 해답은 공부하시면서 찾아보시길 바랍니다!
+
+* 힌트 : 맵의 Color를 채우는 반복문과 이미지를 Drawing 하는 반복문을 비교해보세요!
+
+---
+
 ### 20.11.16 Update
 * [Sprite번역](https://github.com/l-yohai/cub3d/blob/master/mlx_example/sprite.md) 중 `스프라이트를 그리기 위해서는 z를 x로 나눈 이후에...` 를 `x를 z로 나눈 이후에 ...` 로 수정하였습니다.
 * 번역오류를 찾아주신 eun-park님 감사합니다.
