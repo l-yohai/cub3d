@@ -162,13 +162,13 @@ void	calc(t_info *info)
 			drawEnd = height - 1;
 
 		int	color;
-		if (worldMap[mapX][mapY] == 1)
+		if (worldMap[mapY][mapX] == 1)
 			color = 0xFF0000;
-		else if (worldMap[mapX][mapY] == 2)
+		else if (worldMap[mapY][mapX] == 2)
 			color = 0x00FF00;
-		else if (worldMap[mapX][mapY] == 3)
+		else if (worldMap[mapY][mapX] == 3)
 			color = 0x0000FF;
-		else if (worldMap[mapX][mapY] == 4)
+		else if (worldMap[mapY][mapX] == 4)
 			color = 0xFFFFFF;
 		else
 			color = 0xFFFF00;
