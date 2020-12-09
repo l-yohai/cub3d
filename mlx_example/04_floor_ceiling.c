@@ -238,7 +238,7 @@ void	calc(t_info *info)
 			drawEnd = height - 1;
 
 		// texturing calculations
-		int texNum = worldMap[mapX][mapY];
+		int texNum = worldMap[mapX][mapY] - 1;
 
 		// calculate value of wallX
 		double wallX;
