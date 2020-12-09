@@ -14,6 +14,10 @@ worldMap[mapY][mapX]으로 변경하여 문제를 수정하였습니다.
 
 ---
 
+### 20.12.09 Update
+* [04_floor_ceiling](/mlx_example/04_floor_ceiling.c) 중 texture buf 인덱스 참조에서 오류가 발생하는 문제 수정
+* 문제를 찾아서 해결해주신 hyeonski님 감사합니다.
+
 ### 20.11.16 Update
 * [Sprite번역](https://github.com/l-yohai/cub3d/blob/master/mlx_example/sprite.md) 중 `스프라이트를 그리기 위해서는 z를 x로 나눈 이후에...` 를 `x를 z로 나눈 이후에 ...` 로 수정하였습니다.
 * 번역오류를 찾아주신 eun-park님 감사합니다.
