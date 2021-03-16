@@ -49,7 +49,7 @@ worldMap[mapY][mapX]으로 변경하여 문제를 수정하였습니다.
 
 본 내용을 읽기 전 위 두 자료를 먼저 참고하시는 걸 추천드립니다.
 
-더불어 해당 과제에서는 Map의 유효성 검사를 해야하는데 이 부분에서는 humbleEgo 님의 [Cub3d Map Tester](https://github.com/humblEgo/cub3D_map_tester)를 통해 테스트를 해보시는 것을 추천드립니다.
+더불어 해당 과제에서는 Map의 유효성 검사를 해야하는데 이 부분에서는 humbleEgo 님의 [Cub3d Map Tester](https://github.com/humblEgo/cub3D_map_tester)를 통해 테스트 해보시는 것을 추천드립니다.
 
 좋은 자료를 만들어주신 세 분께 감사의 인사를 전합니다.
 
