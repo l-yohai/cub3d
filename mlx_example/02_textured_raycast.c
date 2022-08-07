@@ -50,6 +50,7 @@ typedef struct	s_info
 	int		texture[8][texHeight * texWidth];
 	double	moveSpeed;
 	double	rotSpeed;
+	int		re_buf;
 }				t_info;
 
 int	worldMap[mapWidth][mapHeight] =
@@ -97,6 +98,17 @@ void	calc(t_info *info)
 	int	x;
 
 	x = 0;
+	if (info->re_buf == 1)
+	{
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				info->buf[i][j] = 0;
+			}
+		}
+		info->re_buf = 0;
+	}
 	while (x < width)
 	{
 		double cameraX = 2 * x / (double)width - 1;
@@ -209,6 +221,7 @@ void	calc(t_info *info)
 			if (side == 1)
 				color = (color >> 1) & 8355711;
 			info->buf[y][x] = color;
+			info->re_buf = 1;
 		}
 		x++;
 	}
@@ -262,6 +275,8 @@ int	key_press(int key, t_info *info)
 	}
 	if (key == K_ESC)
 		exit(0);
+	mlx_clear_window(info->mlx, info->win);
+	main_loop(info);
 	return (0);
 }
 
@@ -276,6 +291,7 @@ int	main(void)
 	info.dirY = 0.0;
 	info.planeX = 0.0;
 	info.planeY = 0.66;
+	info.re_buf = 0;
 
 	info.buf = (int **)malloc(sizeof(int *) * height);
 	for (int i = 0; i < height; i++)
@@ -324,9 +340,10 @@ int	main(void)
 
 	info.img.img = mlx_new_image(info.mlx, width, height);
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
-
-	mlx_loop_hook(info.mlx, &main_loop, &info);
-	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
+	main_loop(&info);
+	mlx_key_hook(info.win, &key_press, &info);
+// 	mlx_loop_hook(info.mlx, &main_loop, &info);
+// 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 
 	mlx_loop(info.mlx);
 }
