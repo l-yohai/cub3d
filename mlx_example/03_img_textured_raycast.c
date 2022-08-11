@@ -52,6 +52,8 @@ typedef struct	s_info
 	int		**texture;
 	double	moveSpeed;
 	double	rotSpeed;
+	int		re_buf;
+
 }				t_info;
 
 int	worldMap[mapWidth][mapHeight] =
@@ -99,6 +101,16 @@ void	calc(t_info *info)
 	int	x;
 
 	x = 0;
+	if (info->re_buf == 1)
+	{
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				info->buf[i][j] = 0;
+			}
+		}
+	}
 	while (x < width)
 	{
 		double cameraX = 2 * x / (double)width - 1;
@@ -211,6 +223,7 @@ void	calc(t_info *info)
 			if (side == 1)
 				color = (color >> 1) & 8355711;
 			info->buf[y][x] = color;
+			info->re_buf = 1;
 		}
 		x++;
 	}
@@ -264,6 +277,8 @@ int	key_press(int key, t_info *info)
 	}
 	if (key == K_ESC)
 		exit(0);
+	mlx_clear_window(info->mlx, info->win);
+	main_loop(info);
 	return (0);
 }
 
@@ -306,6 +321,7 @@ int	main(void)
 	info.dirY = 0.0;
 	info.planeX = 0.0;
 	info.planeY = 0.66;
+	info.re_buf = 0;
 
 	for (int i = 0; i < height; i++)
 	{
